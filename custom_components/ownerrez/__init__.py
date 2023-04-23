@@ -1,5 +1,5 @@
 """
-Custom integration to integrate Glenns Custom Component with Home Assistant.
+Custom integration to integrate Owner Reservations with Home Assistant.
 
 For more details about this integration, please refer to
 https://github.com/blueflame66/glennsintegration
