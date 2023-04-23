@@ -1,7 +1,7 @@
 {
   "name": "Owner Reservations Integration",
-  "hacs": "0.1.0",
+  "hacs": "0.2.0",
   "domains": ["calendar"],
   "iot_class": "Cloud Polling",
-  "homeassistant": "0.1.0"
+  "homeassistant": "0.115.0"
 }

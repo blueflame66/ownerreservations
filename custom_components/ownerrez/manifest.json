@@ -1,11 +1,16 @@
 {
+  "version": "0.2",
   "domain": "ownerrez",
-  "name": "Owner Reservations Integration",
-  "documentation": "https://github.com/blueflame66/glennsintegration",
-  "issue_tracker": "https://github.com/blueflame66/glennsintegration/issues",
-  "dependencies": [],
+  "name": "OwnerRez Integration",
+  "codeowners": [
+    "@blueflame66"
+  ],
   "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://www.home-assistant.io/integrations/glenn1",
+  "homekit": {},
   "iot_class": "cloud_polling",
-  "codeowners": ["@blueflame66"],
-  "requirements": []
+  "requirements": [],
+  "ssdp": [],
+  "zeroconf": []
 }
