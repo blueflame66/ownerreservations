@@ -1,7 +1,7 @@
 {
-  "name": "Glenns Custom Component",
-  "hacs": "1.6.0",
-  "domains": ["binary_sensor", "sensor", "switch"],
+  "name": "Owner Reservations Integration",
+  "hacs": "0.1.0",
+  "domains": ["calendar"],
   "iot_class": "Cloud Polling",
   "homeassistant": "0.1.0"
 }

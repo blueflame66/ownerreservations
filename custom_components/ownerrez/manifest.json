@@ -5,6 +5,7 @@
   "issue_tracker": "https://github.com/blueflame66/glennsintegration/issues",
   "dependencies": [],
   "config_flow": true,
+  "iot_class": "cloud_polling",
   "codeowners": ["@blueflame66"],
   "requirements": []
 }

@@ -1,41 +1,10 @@
-"""Constants for Glenns Custom Component."""
-# Base component constants
-NAME = "Glenns Custom Component"
-DOMAIN = "catbird"
-DOMAIN_DATA = f"{DOMAIN}_data"
-VERSION = "0.0.0"
+"""Constants for the OwnerRez Integration integration."""
 
-ATTRIBUTION = "Data provided by http://jsonplaceholder.typicode.com/"
-ISSUE_URL = "https://github.com/blueflame66/glennsintegration/issues"
+DOMAIN = "ownerrez"
 
-# Icons
-ICON = "mdi:format-quote-close"
+CONF_MAX_EVENTS = "max_events"
+CONF_DAYS = "days"
 
-# Device classes
-BINARY_SENSOR_DEVICE_CLASS = "connectivity"
-
-# Platforms
-BINARY_SENSOR = "binary_sensor"
-SENSOR = "sensor"
-SWITCH = "switch"
-PLATFORMS = [BINARY_SENSOR, SENSOR, SWITCH]
-
-
-# Configuration and options
-CONF_ENABLED = "enabled"
-CONF_USERNAME = "username"
-CONF_PASSWORD = "password"
-
-# Defaults
-DEFAULT_NAME = DOMAIN
-
-
-STARTUP_MESSAGE = f"""
--------------------------------------------------------------------
-{NAME}
-Version: {VERSION}
-This is a custom integration!
-If you have any issues with this you need to open an issue here:
-{ISSUE_URL}
--------------------------------------------------------------------
-"""
+DEFAULT_URL = "https://secure.ownerreservations.com/api"
+DEFAULT_PT = "pt_xxx"
+DEFAULT_UN = "emailaddress"
