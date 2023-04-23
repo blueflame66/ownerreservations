@@ -1,0 +1,10 @@
+{
+  "domain": "ownerrez",
+  "name": "Owner Reservations Integration",
+  "documentation": "https://github.com/blueflame66/glennsintegration",
+  "issue_tracker": "https://github.com/blueflame66/glennsintegration/issues",
+  "dependencies": [],
+  "config_flow": true,
+  "codeowners": ["@blueflame66"],
+  "requirements": []
+}
