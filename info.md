@@ -46,7 +46,7 @@ Code template was mainly taken from [@Ludeeus](https://github.com/ludeeus)'s [in
 [commits-shield]: https://img.shields.io/github/commit-activity/y/blueflame66/glennsintegration.svg?style=for-the-badge
 [commits]: https://github.com/blueflame66/glennsintegration/commits/main
 [hacs]: https://hacs.xyz
-[hacsbadge]: https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
 [discord]: https://discord.gg/Qa5fW2R
 [discord-shield]: https://img.shields.io/discord/330944238910963714.svg?style=for-the-badge
 [exampleimg]: example.png
