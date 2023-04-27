@@ -4,7 +4,7 @@ from __future__ import annotations
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
-from homeassistant.const import CONF_API_TOKEN, CONF_USERNAME
+from homeassistant.const import CONF_API_TOKEN, CONF_USERNAME, CONF_DELAY_TIME
 from .const import CONF_DAYS, CONF_MAX_EVENTS, DEFAULT_URL
 from homeassistant.components.calendar import CalendarEvent
 from homeassistant.util import Throttle, dt
@@ -17,7 +17,7 @@ import aiohttp
 import pytz
 
 _LOGGER = logging.getLogger(__name__)
-MIN_TIME_BETWEEN_UPDATES = timedelta(seconds=360)
+MIN_TIME_BETWEEN_UPDATES = timedelta(seconds=7200)
 PLATFORMS: list[Platform] = [Platform.CALENDAR]
 
 
@@ -30,6 +30,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     auth = aiohttp.BasicAuth(config.get(CONF_USERNAME), config.get(CONF_API_TOKEN))
     domain_entry = {
         "auth": auth,
+        # CONF_DELAY_TIME: config.get(CONF_DELAY_TIME),
         CONF_DAYS: config.get(CONF_DAYS),
         CONF_MAX_EVENTS: config.get(CONF_MAX_EVENTS),
     }
@@ -39,20 +40,22 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     jresult = []
     jre2 = []
     api_url = DEFAULT_URL + "/properties"
+
     async with aiohttp.ClientSession(auth=auth) as session:
         async with session.get(api_url) as resp:
             jresult = await resp.json()
+            await session.close()
 
-    peter = dict(jresult[0])
-    paul = dict(jresult[0])
-    jre2.append(peter)
-    paul["Key"] = "3f6a144d-298a-40f9-836d-8cdce30ed570"
-    paul["Name"] = "Calgary Condo"
-    paul["Id"] = 1234
-    jre2.append(paul)
+            peter = dict(jresult[0])
+            paul = dict(jresult[0])
+            jre2.append(peter)
+            paul["Key"] = "3f6a144d-298a-40f9-836d-8cdce30ed570"
+            paul["Name"] = "Calgary Condo"
+            paul["Id"] = 1234
+            jre2.append(paul)
 
-    hass.data[DOMAIN]["Calendars"] = []
-    CalPointer = hass.data[DOMAIN]["Calendars"]
+            hass.data[DOMAIN]["Calendars"] = []
+            CalPointer = hass.data[DOMAIN]["Calendars"]
 
     for orproperty in jre2:
         CalPointer.append(CalEvents(config, orproperty))
@@ -113,7 +116,7 @@ class CalEvents:
                     # events.append(event)
         return events
 
-    # @Throttle(MIN_TIME_BETWEEN_UPDATES)
+    @Throttle(MIN_TIME_BETWEEN_UPDATES)
     async def update(self):
         """Update list of upcoming events."""
         _LOGGER.debug("Running ICalEvents update for calendar %s", self.name)
@@ -158,9 +161,9 @@ class CalEvents:
                                 "https://api.ownerreservations.com/v2/bookings/"
                                 + str(bookingrecord["id"])
                             )
-                            async with aiohttp.ClientSession(auth=self.auth) as session:
-                                async with session.get(api_url) as resp:
-                                    bresult = await resp.json()
+
+                            async with session.get(api_url) as resp:
+                                bresult = await resp.json()
 
                             # nr_datestr = bookingrecord["arrival"].replace(
                             #    "T00:00", "T" + bresult["check_in"]
@@ -187,9 +190,23 @@ class CalEvents:
                             # )
                             nr_end_dt = datetime.strptime(nr_datestr, date_format)
                             nr_end = tz.localize(nr_end_dt)
+
+                            api_url = (
+                                "https://api.ownerreservations.com/v2/guests/"
+                                + str(bookingrecord["guest_id"])
+                            )
+
+                            async with session.get(api_url) as resp:
+                                guest_name = await resp.json()
+
                             new_record = {
                                 "start": nr_start,
                                 "end": nr_end,
-                                "summary": bookingrecord["guest_id"],
+                                "summary": guest_name["first_name"]
+                                + " "
+                                + guest_name["last_name"]
+                                + " TZ:"
+                                + tz.zone,
                             }
                             self.calendar.append(new_record)
+        await session.close()

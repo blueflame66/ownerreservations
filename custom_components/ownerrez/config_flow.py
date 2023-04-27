@@ -16,7 +16,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.exceptions import HomeAssistantError
 import homeassistant.helpers.config_validation as cv
-from homeassistant.const import CONF_API_TOKEN, CONF_USERNAME
+from homeassistant.const import CONF_API_TOKEN, CONF_USERNAME, CONF_DELAY_TIME
 
 from .const import DOMAIN
 
@@ -26,8 +26,9 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
     {
         vol.Required(CONF_USERNAME, default=DEFAULT_UN): str,
         vol.Required(CONF_API_TOKEN, default=DEFAULT_PT): str,
-        vol.Required(CONF_DAYS, default=60): cv.positive_int,
-        vol.Required(CONF_MAX_EVENTS, default=6): cv.positive_int,
+        # vol.Required(CONF_DELAY_TIME, default=120): cv.positive_int,
+        vol.Required(CONF_DAYS, default=365): cv.positive_int,
+        vol.Required(CONF_MAX_EVENTS, default=10): cv.positive_int,
     }
 )
 
