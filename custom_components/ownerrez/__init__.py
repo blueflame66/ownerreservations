@@ -40,9 +40,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     jresult = []
     jre2 = []
     api_url = DEFAULT_URL + "/properties"
+
     async with aiohttp.ClientSession(auth=auth) as session:
         async with session.get(api_url) as resp:
             jresult = await resp.json()
+            await session.close()
 
             peter = dict(jresult[0])
             paul = dict(jresult[0])
@@ -159,9 +161,9 @@ class CalEvents:
                                 "https://api.ownerreservations.com/v2/bookings/"
                                 + str(bookingrecord["id"])
                             )
-                            async with aiohttp.ClientSession(auth=self.auth) as session:
-                                async with session.get(api_url) as resp:
-                                    bresult = await resp.json()
+
+                            async with session.get(api_url) as resp:
+                                bresult = await resp.json()
 
                             # nr_datestr = bookingrecord["arrival"].replace(
                             #    "T00:00", "T" + bresult["check_in"]
@@ -193,15 +195,18 @@ class CalEvents:
                                 "https://api.ownerreservations.com/v2/guests/"
                                 + str(bookingrecord["guest_id"])
                             )
-                            async with aiohttp.ClientSession(auth=self.auth) as session:
-                                async with session.get(api_url) as resp:
-                                    guest_name = await resp.json()
+
+                            async with session.get(api_url) as resp:
+                                guest_name = await resp.json()
 
                             new_record = {
                                 "start": nr_start,
                                 "end": nr_end,
                                 "summary": guest_name["first_name"]
                                 + " "
-                                + guest_name["last_name"],
+                                + guest_name["last_name"]
+                                + " TZ:"
+                                + tz.zone,
                             }
                             self.calendar.append(new_record)
+        await session.close()
