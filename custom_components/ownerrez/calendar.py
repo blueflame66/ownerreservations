@@ -2,10 +2,11 @@
 
 import copy
 import logging
-import aiohttp
-import pytz
 
-from .const import DEFAULT_URL
+# import aiohttp
+# import pytz
+
+# from .const import DEFAULT_URL
 from homeassistant.util import dt
 from datetime import datetime, timedelta, date
 
@@ -43,8 +44,6 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
         entity_id = generate_entity_id(
             ENTITY_ID_FORMAT, DOMAIN + "_" + str(orCal.orid), hass=hass
         )
-
-        # cal_events = hass.data[DOMAIN][jre3["Key"]]
 
         calendar = ORCalendar(entity_id, orCal)
 
@@ -90,11 +89,9 @@ class ORCalendar(CalendarEntity):
         # )
 
     async def async_update(self):
-        """Glenn"""
+        """Update the Calendar"""
         _LOGGER.debug("Running ICalCalendarEventDevice async update for %s", self.name)
         await self.cal_events.update()
-        j = self.name
-        k = self.cal_events
         event = copy.deepcopy(self.cal_events.event)
         if event is None:
             self._event = event

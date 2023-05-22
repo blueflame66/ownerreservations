@@ -18,7 +18,8 @@ import pytz
 
 _LOGGER = logging.getLogger(__name__)
 MIN_TIME_BETWEEN_UPDATES = timedelta(seconds=7200)
-PLATFORMS: list[Platform] = [Platform.CALENDAR]
+# PLATFORMS: list[Platform] = [Platform.CALENDAR]
+PLATFORMS = ["sensor", "calendar"]
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
@@ -87,7 +88,7 @@ class CalEvents:
         self.tzid = orproperty["TimeZoneId"]
         self.name = orproperty["Name"]
         self.orid = orproperty["Id"]
-        self.auth = auth = aiohttp.BasicAuth(
+        self.auth = aiohttp.BasicAuth(
             config.get(CONF_USERNAME), config.get(CONF_API_TOKEN)
         )
         self.calendar = []
@@ -207,6 +208,10 @@ class CalEvents:
                                 + guest_name["last_name"]
                                 + " TZ:"
                                 + tz.zone,
+                                "guestname": guest_name["first_name"]
+                                + " "
+                                + guest_name["last_name"],
+                                "orid": self.orid,
                             }
                             self.calendar.append(new_record)
         await session.close()
